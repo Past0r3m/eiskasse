@@ -494,6 +494,105 @@
     cursor: pointer;
     width: 100%;
   }
+  /* ─────── QTY STEPPER + SHORTCUT PAD ─────── */
+  .qty-bar {
+    padding: 8px 10px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .qty-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+    flex-shrink: 0;
+  }
+  .qty-btn:active { background: var(--border); transform: scale(0.91); }
+  .qty-btn.qty-undo { color: var(--danger); font-size: 0.9rem; margin-left: auto; }
+  .qty-display {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    flex: 1;
+    text-align: center;
+    transition: color 0.15s;
+  }
+  /* Shortcut pad */
+  .shortcut-pad {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .shortcut-pad-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .sc-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: all 0.1s;
+    width: 100%;
+    text-align: left;
+  }
+  .sc-btn:active { background: var(--border); transform: scale(0.97); }
+  .sc-btn:hover  { border-color: var(--mint); }
+  .sc-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--mint);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .sc-name {
+    font-size: 0.76rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+  .sc-price {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  /* Shortcut badge on product buttons */
+  .sc-badge {
+    position: absolute;
+    top: 6px;
+    left: 7px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--mint);
+    line-height: 1;
+  }
   /* Toast */
   .toast {
     position: fixed;
@@ -547,6 +646,17 @@
     <div class="sidebar-header">
       Bon
       <button class="btn-secondary" style="width:auto;padding:4px 10px;font-size:0.72rem" onclick="clearCart()">Leeren</button>
+    </div>
+    <!-- Qty stepper -->
+    <div class="qty-bar">
+      <button class="qty-btn" onclick="changeQty(-1)">−</button>
+      <span class="qty-display" id="qty-display">×1</span>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+      <button class="qty-btn qty-undo" title="Letzten Artikel entfernen" onclick="undoLast()">⌫</button>
+    </div>
+    <!-- Shortcut pad -->
+    <div class="shortcut-pad" id="shortcut-pad">
+      <!-- rendered by JS -->
     </div>
     <div class="cart-list" id="cart-list">
       <p class="cart-empty">Noch nichts gewählt.<br>Tippe auf einen Artikel.</p>
@@ -703,6 +813,78 @@ let config = {
 
 let cart  = [];
 let sales = { kugeln: {}, spaghettieis: {}, becher: {}, getraenke: {} };
+let qty   = 1;
+
+// ─── Shortcut-Mapping 1–9 ───
+const SHORTCUTS = {
+  1: { cat: 'spaghettieis', idx: 0 }, // Tradizionale
+  2: { cat: 'spaghettieis', idx: 1 }, // Fragola
+  3: { cat: 'spaghettieis', idx: 2 }, // Banana
+  4: { cat: 'spaghettieis', idx: 3 }, // Carbonara
+  5: { cat: 'becher',       idx: 0 }, // Amarena
+  6: { cat: 'becher',       idx: 1 }, // Schoko
+  7: { cat: 'becher',       idx: 2 }, // Erdbeerbecher
+  8: { cat: 'becher',       idx: 3 }, // Früchtebecher
+  9: { cat: 'becher',       idx: 4 }, // Bananabecher
+};
+
+// ─── Menge / Shortcuts ───
+function changeQty(delta) {
+  qty = Math.max(1, Math.min(99, qty + delta));
+  updateQtyDisplay();
+}
+function getQty() { return qty; }
+function updateQtyDisplay() {
+  const el = document.getElementById('qty-display');
+  if (!el) return;
+  el.textContent = '×' + qty;
+  el.style.color = qty > 1 ? 'var(--mint)' : 'var(--text-dim)';
+}
+function pressShortcut(n) {
+  const s = SHORTCUTS[n];
+  if (!s) return;
+  addToCart(s.cat, s.idx);
+}
+function undoLast() {
+  if (cart.length === 0) return;
+  cart.pop();
+  renderCart();
+}
+function getShortcutNum(cat, idx) {
+  const entry = Object.entries(SHORTCUTS).find(([, s]) => s.cat === cat && s.idx === idx);
+  return entry ? entry[0] : null;
+}
+function renderShortcuts() {
+  const pad = document.getElementById('shortcut-pad');
+  if (!pad) return;
+  const entries = Object.entries(SHORTCUTS);
+  if (entries.length === 0) { pad.innerHTML = ''; return; }
+
+  // Gruppieren nach Kategorie
+  const groups = {};
+  entries.forEach(([n, s]) => {
+    if (!groups[s.cat]) groups[s.cat] = [];
+    groups[s.cat].push({ n, ...s });
+  });
+
+  pad.innerHTML = Object.entries(groups).map(([cat, items]) => `
+    <div class="shortcut-pad-label">${CAT_META[cat]?.label || cat}</div>
+    ${items.map(({ n, cat: c, idx }) => {
+      const item = config[c]?.[idx];
+      if (!item) return '';
+      return `<button class="sc-btn" onclick="pressShortcut(${n})">
+        <span class="sc-num">${n}</span>
+        <span class="sc-name">${escHtml(item.name)}</span>
+        <span class="sc-price">${fmt(item.price)}</span>
+      </button>`;
+    }).join('')}
+  `).join('');
+}
+// Tastatur-Shortcuts (physische Tastatur)
+document.addEventListener('keydown', e => {
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 9 && SHORTCUTS[n]) pressShortcut(n);
+});
 
 // ─── Persist ───
 function save() {
@@ -743,22 +925,30 @@ function renderPOS() {
     <div>
       <div class="section-label">${meta.label}</div>
       <div class="grid3">
-        ${(config[cat] || []).map((item, i) => `
-          <button class="item-btn ${meta.cls}" onclick="addToCart('${cat}',${i})">
+        ${(config[cat] || []).map((item, i) => {
+          const sc = getShortcutNum(cat, i);
+          return `<button class="item-btn ${meta.cls}" onclick="addToCart('${cat}',${i})">
+            ${sc ? `<span class="sc-badge">${sc}</span>` : ''}
             <span class="ico">${meta.ico}</span>
             <span class="lbl">${escHtml(item.name)}</span>
             <span class="price-tag">${fmt(item.price)}</span>
-          </button>
-        `).join('')}
+          </button>`;
+        }).join('')}
       </div>
     </div>
   `).join('');
+  renderShortcuts();
 }
 
 // ─── Cart ───
 function addToCart(category, idx) {
-  const item = config[category][idx];
-  cart.push({ category, idx, name: item.name, price: item.price, id: Date.now() + Math.random() });
+  const item  = config[category][idx];
+  const count = getQty();
+  for (let i = 0; i < count; i++) {
+    cart.push({ category, idx, name: item.name, price: item.price, id: Date.now() + Math.random() });
+  }
+  qty = 1;
+  updateQtyDisplay();
   renderCart();
 }
 function removeFromCart(id) {
@@ -1002,8 +1192,9 @@ updateClock();
 
 // ─── Init ───
 load();
-renderPOS();
+renderPOS(); // renderShortcuts() wird darin aufgerufen
 renderCart();
+updateQtyDisplay();
 initTheme();
 
 // ── Service Worker ──
