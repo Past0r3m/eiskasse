@@ -1,11 +1,11 @@
-const CACHE_NAME = 'eiskasse-v5';
+const CACHE_NAME = 'eiskasse-v6';
 
 const ASSETS = [
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-  '/icons/apple-touch-icon.png',
+  '/eiskasse/index.html',
+  '/eiskasse/manifest.json',
+  '/eiskasse/icons/icon-192x192.png',
+  '/eiskasse/icons/icon-512x512.png',
+  '/eiskasse/icons/apple-touch-icon.png',
   // Google Fonts – cached on first load
   'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap',
   // SheetJS für Excel-Export
@@ -61,7 +61,7 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         // Offline fallback for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('/eiskasse/index.html');
         }
       });
     })
