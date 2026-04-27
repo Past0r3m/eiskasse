@@ -34,6 +34,7 @@
     --radius-sm: 8px;
     --transition-theme: background 0.25s, color 0.25s, border-color 0.25s;
   }
+
   /* ── Light mode ── */
   [data-theme="light"] {
     --bg: #f0f0ec;
@@ -49,6 +50,7 @@
     --danger: #cc2a1f;
     --success: #0f7a3e;
   }
+
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --bg: #f0f0ec;
@@ -65,6 +67,7 @@
       --success: #0f7a3e;
     }
   }
+
   /* Theme toggle */
   .theme-toggle {
     background: var(--surface2);
@@ -84,7 +87,9 @@
   }
   .theme-toggle:active { transform: scale(0.93); }
   .theme-toggle .ico { font-size: 1rem; line-height: 1; }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
@@ -96,6 +101,7 @@
     user-select: none;
     transition: var(--transition-theme);
   }
+
   /* HEADER */
   header {
     display: flex;
@@ -143,11 +149,14 @@
     color: var(--text-dim);
     font-variant-numeric: tabular-nums;
   }
+
   /* VIEWS */
   .view { display: none; flex: 1; overflow: hidden; }
   .view.active { display: flex; }
+
   /* ─────── POS VIEW ─────── */
   #pos-view { flex-direction: row; gap: 0; }
+
   /* LEFT: scroll area */
   .pos-items {
     flex: 1;
@@ -159,6 +168,7 @@
   }
   .pos-items::-webkit-scrollbar { width: 4px; }
   .pos-items::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
   .section-label {
     font-family: 'Syne', sans-serif;
     font-size: 0.7rem;
@@ -168,7 +178,10 @@
     color: var(--text-dim);
     margin-bottom: 2px;
   }
-  .grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+
   .item-btn {
     display: flex;
     flex-direction: column;
@@ -193,26 +206,29 @@
     opacity: 0;
     transition: opacity 0.15s;
   }
-  /* Per-category glow colours */
-  .item-btn.cat-kugeln::before       { background: radial-gradient(circle at center, rgba(126,232,200,0.14), transparent 70%); }
-  .item-btn.cat-spaghettieis::before { background: radial-gradient(circle at center, rgba(245,230,200,0.14), transparent 70%); }
-  .item-btn.cat-becher::before       { background: radial-gradient(circle at center, rgba(157,143,255,0.14), transparent 70%); }
-  .item-btn.cat-getraenke::before    { background: radial-gradient(circle at center, rgba(240,143,173,0.14), transparent 70%); }
+  .item-btn.scoop-small::before { background: radial-gradient(circle at center, rgba(126,232,200,0.12), transparent 70%); }
+  .item-btn.scoop-large::before { background: radial-gradient(circle at center, rgba(240,143,173,0.12), transparent 70%); }
+  .item-btn.becher-btn::before  { background: radial-gradient(circle at center, rgba(157,143,255,0.12), transparent 70%); }
   .item-btn:active::before { opacity: 1; }
   .item-btn:active { transform: scale(0.96); border-color: var(--mint); }
+
   .item-btn .ico { font-size: 1.8rem; line-height: 1; }
   .item-btn .lbl {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 500;
     text-align: center;
     color: var(--text);
     line-height: 1.2;
   }
-  .item-btn .price-tag { font-size: 0.75rem; font-weight: 500; }
-  .item-btn.cat-kugeln .price-tag       { color: var(--mint); }
-  .item-btn.cat-spaghettieis .price-tag { color: var(--cream); }
-  .item-btn.cat-becher .price-tag       { color: var(--violet); }
-  .item-btn.cat-getraenke .price-tag    { color: var(--pink); }
+  .item-btn .price-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dim);
+  }
+  .item-btn.scoop-small .price-tag { color: var(--mint); }
+  .item-btn.scoop-large .price-tag { color: var(--pink); }
+  .item-btn.becher-btn .price-tag { color: var(--violet); }
+
   /* RIGHT: cart / total */
   .pos-sidebar {
     width: 240px;
@@ -222,6 +238,7 @@
     display: flex;
     flex-direction: column;
   }
+
   .sidebar-header {
     padding: 14px 16px;
     border-bottom: 1px solid var(--border);
@@ -243,6 +260,7 @@
   }
   .cart-list::-webkit-scrollbar { width: 3px; }
   .cart-list::-webkit-scrollbar-thumb { background: var(--border); }
+
   .cart-item {
     display: flex;
     justify-content: space-between;
@@ -267,6 +285,7 @@
     transition: color 0.15s;
   }
   .cart-item-del:hover { color: var(--danger); }
+
   .cart-empty {
     color: var(--text-dim);
     font-size: 0.8rem;
@@ -274,6 +293,7 @@
     padding: 30px 10px;
     line-height: 1.6;
   }
+
   .sidebar-footer {
     border-top: 1px solid var(--border);
     padding: 14px;
@@ -293,6 +313,7 @@
     font-weight: 800;
     color: var(--cream);
   }
+
   .btn-primary {
     background: linear-gradient(135deg, var(--mint), var(--violet));
     color: #0f0f14;
@@ -308,6 +329,7 @@
   }
   .btn-primary:active { transform: scale(0.97); opacity: 0.85; }
   .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+
   .btn-secondary {
     background: var(--surface2);
     color: var(--text-dim);
@@ -322,6 +344,7 @@
     width: 100%;
   }
   .btn-secondary:hover { color: var(--text); border-color: var(--text-dim); }
+
   /* ─────── SUMMARY VIEW ─────── */
   #summary-view {
     flex-direction: column;
@@ -331,6 +354,7 @@
   }
   #summary-view::-webkit-scrollbar { width: 4px; }
   #summary-view::-webkit-scrollbar-thumb { background: var(--border); }
+
   .summary-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -370,9 +394,10 @@
   .summary-table tr:hover td { background: var(--surface2); }
   .td-right { text-align: right; }
   .td-bold { font-weight: 600; color: var(--cream); }
+
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
   .stat-card {
@@ -387,11 +412,15 @@
   .stat-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; }
   .stat-value {
     font-family: 'Syne', sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--cream);
   }
+
   .export-row { display: flex; gap: 10px; }
+  .export-row .btn-primary { background: linear-gradient(135deg, var(--mint), #4ecdc4); }
+  .export-row .btn-pdf { background: linear-gradient(135deg, var(--pink), #ff8c69); }
+
   .btn-pdf {
     background: linear-gradient(135deg, var(--pink), #ff8c69);
     color: #0f0f14;
@@ -405,12 +434,15 @@
     transition: opacity 0.15s;
     flex: 1;
   }
+
   .no-data {
     text-align: center;
-    padding: 30px;
+    padding: 40px;
     color: var(--text-dim);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
+    line-height: 1.8;
   }
+
   /* ─────── SETTINGS VIEW ─────── */
   #settings-view {
     flex-direction: column;
@@ -419,6 +451,7 @@
     gap: 16px;
   }
   #settings-view::-webkit-scrollbar { width: 4px; }
+
   .settings-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -433,6 +466,16 @@
     font-size: 0.85rem;
   }
   .settings-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+  .field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .field-label { font-size: 0.82rem; color: var(--text); flex: 1; }
+  .field-sublabel { font-size: 0.72rem; color: var(--text-dim); }
+
   .input-field {
     background: var(--bg);
     border: 1.5px solid var(--border);
@@ -441,18 +484,23 @@
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     font-size: 0.85rem;
+    width: 100px;
+    text-align: right;
     outline: none;
     transition: border-color 0.15s;
   }
   .input-field:focus { border-color: var(--mint); }
+  .input-wide { width: 100%; text-align: left; }
+
   .becher-list { display: flex; flex-direction: column; gap: 8px; }
   .becher-entry {
     display: flex;
     gap: 8px;
     align-items: center;
   }
-  .becher-entry .input-name  { flex: 1; text-align: left; }
+  .becher-entry .input-field { flex: 1; width: auto; text-align: left; }
   .becher-entry .input-price { width: 80px; text-align: right; flex-shrink: 0; }
+
   .btn-del-becher {
     background: none;
     border: 1.5px solid var(--border);
@@ -469,6 +517,7 @@
     transition: background 0.15s;
   }
   .btn-del-becher:hover { background: rgba(255,107,107,0.1); }
+
   .btn-add {
     background: none;
     border: 1.5px dashed var(--border);
@@ -482,6 +531,7 @@
     font-family: 'DM Sans', sans-serif;
   }
   .btn-add:hover { border-color: var(--mint); color: var(--mint); }
+
   .btn-save-settings {
     background: linear-gradient(135deg, var(--mint), var(--violet));
     color: #0f0f14;
@@ -494,105 +544,50 @@
     cursor: pointer;
     width: 100%;
   }
-  /* ─────── QTY STEPPER + SHORTCUT PAD ─────── */
-  .qty-bar {
-    padding: 8px 10px 8px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
+
+  .badge-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+    display: inline-block;
+  }
+
+  /* Quick panel in sidebar */
+  .quick-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
-  }
-  .qty-btn {
-    background: var(--surface2);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-size: 1.1rem;
-    font-weight: 700;
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s;
-    flex-shrink: 0;
-  }
-  .qty-btn:active { background: var(--border); transform: scale(0.91); }
-  .qty-btn.qty-undo { color: var(--danger); font-size: 0.9rem; margin-left: auto; }
-  .qty-display {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 800;
-    flex: 1;
-    text-align: center;
-    transition: color 0.15s;
-  }
-  /* Shortcut pad */
-  .shortcut-pad {
-    padding: 8px 10px;
+    padding: 8px;
     border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .shortcut-pad-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 2px;
-  }
-  .sc-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 7px 10px;
-    cursor: pointer;
-    transition: all 0.1s;
-    width: 100%;
-    text-align: left;
-  }
-  .sc-btn:active { background: var(--border); transform: scale(0.97); }
-  .sc-btn:hover  { border-color: var(--mint); }
-  .sc-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: var(--mint);
-    width: 16px;
-    text-align: center;
     flex-shrink: 0;
   }
-  .sc-name {
-    font-size: 0.76rem;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
+  .quick-panel .item-btn {
+    min-height: 72px;
+    padding: 10px 6px;
+    gap: 3px;
   }
-  .sc-price {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    flex-shrink: 0;
-  }
-  /* Shortcut badge on product buttons */
-  .sc-badge {
+  .quick-panel .item-btn .ico { font-size: 1.4rem; }
+  .quick-panel .item-btn .lbl { font-size: 0.72rem; }
+  .quick-panel .item-btn .price-tag { font-size: 0.68rem; }
+  .quick-panel .item-btn .num-badge { font-size: 0.6rem; }
+
+  /* Number badge on item buttons */
+  .num-badge {
     position: absolute;
-    top: 6px;
-    left: 7px;
+    top: 7px;
+    left: 9px;
     font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 800;
-    color: var(--mint);
+    color: var(--text-dim);
     line-height: 1;
   }
+
+  /* Sahne button */
+  .item-btn.sahne-btn::before { background: radial-gradient(circle at center, rgba(245,230,200,0.12), transparent 70%); }
+  .item-btn.sahne-btn .price-tag { color: var(--cream); }
+
   /* Toast */
   .toast {
     position: fixed;
@@ -610,6 +605,7 @@
     pointer-events: none;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
+
   /* Print styles */
   @media print {
     body { background: white; color: black; }
@@ -621,6 +617,7 @@
 </style>
 </head>
 <body>
+
 <header>
   <h1>🍦 Eiskasse</h1>
   <div class="header-tabs">
@@ -642,21 +639,14 @@
   <div class="pos-items" id="pos-items-area">
     <!-- rendered by JS -->
   </div>
+
   <div class="pos-sidebar">
+    <div class="quick-panel" id="quick-panel">
+      <!-- rendered by JS -->
+    </div>
     <div class="sidebar-header">
       Bon
       <button class="btn-secondary" style="width:auto;padding:4px 10px;font-size:0.72rem" onclick="clearCart()">Leeren</button>
-    </div>
-    <!-- Qty stepper -->
-    <div class="qty-bar">
-      <button class="qty-btn" onclick="changeQty(-1)">−</button>
-      <span class="qty-display" id="qty-display">×1</span>
-      <button class="qty-btn" onclick="changeQty(1)">+</button>
-      <button class="qty-btn qty-undo" title="Letzten Artikel entfernen" onclick="undoLast()">⌫</button>
-    </div>
-    <!-- Shortcut pad -->
-    <div class="shortcut-pad" id="shortcut-pad">
-      <!-- rendered by JS -->
     </div>
     <div class="cart-list" id="cart-list">
       <p class="cart-empty">Noch nichts gewählt.<br>Tippe auf einen Artikel.</p>
@@ -680,36 +670,24 @@
       <span class="stat-value" id="stat-revenue">0,00 €</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Artikel verkauft</span>
+      <span class="stat-label">Transaktionen</span>
       <span class="stat-value" id="stat-tx">0</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Kugeln</span>
+      <span class="stat-label">Kugeln gesamt</span>
       <span class="stat-value" id="stat-scoops">0</span>
     </div>
-    <div class="stat-card">
-      <span class="stat-label">Spaghettieis</span>
-      <span class="stat-value" id="stat-spaghettieis">0</span>
-    </div>
   </div>
 
   <div class="summary-card">
-    <div class="summary-card-header">🍦 Kugeln &amp; Portionen</div>
+    <div class="summary-card-header">🍨 Kugeln</div>
     <table class="summary-table">
       <thead><tr>
-        <th>Artikel</th><th class="td-right">Menge</th><th class="td-right">Umsatz</th>
+        <th>Artikel</th>
+        <th class="td-right">Menge</th>
+        <th class="td-right">Umsatz</th>
       </tr></thead>
-      <tbody id="summary-kugeln"></tbody>
-    </table>
-  </div>
-
-  <div class="summary-card">
-    <div class="summary-card-header">🍝 Spaghettieis</div>
-    <table class="summary-table">
-      <thead><tr>
-        <th>Artikel</th><th class="td-right">Menge</th><th class="td-right">Umsatz</th>
-      </tr></thead>
-      <tbody id="summary-spaghettieis"></tbody>
+      <tbody id="summary-scoops"></tbody>
     </table>
   </div>
 
@@ -717,26 +695,19 @@
     <div class="summary-card-header">🥤 Eisbecher</div>
     <table class="summary-table">
       <thead><tr>
-        <th>Eisbecher</th><th class="td-right">Menge</th><th class="td-right">Umsatz</th>
+        <th>Eisbecher</th>
+        <th class="td-right">Menge</th>
+        <th class="td-right">Umsatz</th>
       </tr></thead>
       <tbody id="summary-becher"></tbody>
     </table>
   </div>
 
-  <div class="summary-card">
-    <div class="summary-card-header">🧃 Eisgetränke</div>
-    <table class="summary-table">
-      <thead><tr>
-        <th>Getränk</th><th class="td-right">Menge</th><th class="td-right">Umsatz</th>
-      </tr></thead>
-      <tbody id="summary-getraenke"></tbody>
-    </table>
-  </div>
-
   <div class="export-row">
-    <button class="btn-primary" style="background:linear-gradient(135deg,var(--mint),#4ecdc4)" onclick="exportExcel()">📊 Excel Export</button>
+    <button class="btn-primary" onclick="exportExcel()">📊 Excel Export</button>
     <button class="btn-pdf" onclick="exportPDF()">🖨️ PDF / Drucken</button>
   </div>
+
   <div style="text-align:center">
     <button class="btn-secondary" style="width:auto;padding:8px 24px;color:var(--danger);border-color:var(--danger)" onclick="resetDay()">Tag zurücksetzen</button>
   </div>
@@ -745,167 +716,85 @@
 <!-- ══════════ SETTINGS VIEW ══════════ -->
 <div id="settings-view" class="view">
   <div class="settings-card">
-    <div class="settings-card-header">🍦 Kugeln &amp; Portionen</div>
+    <div class="settings-card-header">🍦 Kugelpreise &amp; Extras</div>
     <div class="settings-body">
-      <div class="becher-list" id="kugeln-list"></div>
-      <button class="btn-add" onclick="addItemField('kugeln')">+ Artikel hinzufügen</button>
+      <div class="field-row">
+        <div>
+          <div class="field-label">Kleine Kugel</div>
+          <div class="field-sublabel">Standard Größe</div>
+        </div>
+        <input type="number" class="input-field" id="price-small" step="0.05" min="0" placeholder="1.00">
+        <span style="font-size:0.8rem;color:var(--text-dim)">€</span>
+      </div>
+      <div class="field-row">
+        <div>
+          <div class="field-label">Große Kugel</div>
+          <div class="field-sublabel">Jumbo Größe</div>
+        </div>
+        <input type="number" class="input-field" id="price-large" step="0.05" min="0" placeholder="1.50">
+        <span style="font-size:0.8rem;color:var(--text-dim)">€</span>
+      </div>
+      <div class="field-row">
+        <div>
+          <div class="field-label">Portion Sahne</div>
+          <div class="field-sublabel">Extra</div>
+        </div>
+        <input type="number" class="input-field" id="price-sahne" step="0.05" min="0" placeholder="0.50">
+        <span style="font-size:0.8rem;color:var(--text-dim)">€</span>
+      </div>
     </div>
   </div>
-  <div class="settings-card">
-    <div class="settings-card-header">🍝 Spaghettieis</div>
-    <div class="settings-body">
-      <div class="becher-list" id="spaghettieis-list"></div>
-      <button class="btn-add" onclick="addItemField('spaghettieis')">+ Spaghettieis hinzufügen</button>
-    </div>
-  </div>
+
   <div class="settings-card">
     <div class="settings-card-header">🥤 Eisbecher verwalten</div>
     <div class="settings-body">
-      <div class="becher-list" id="becher-list"></div>
-      <button class="btn-add" onclick="addItemField('becher')">+ Eisbecher hinzufügen</button>
+      <div class="becher-list" id="becher-list">
+        <!-- rendered by JS -->
+      </div>
+      <button class="btn-add" onclick="addBecherField()">+ Eisbecher hinzufügen</button>
     </div>
   </div>
-  <div class="settings-card">
-    <div class="settings-card-header">🧃 Eisgetränke</div>
-    <div class="settings-body">
-      <div class="becher-list" id="getraenke-list"></div>
-      <button class="btn-add" onclick="addItemField('getraenke')">+ Getränk hinzufügen</button>
-    </div>
-  </div>
+
   <button class="btn-save-settings" onclick="saveSettings()">Einstellungen speichern</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── Kategorie-Metadaten ───
-const CAT_META = {
-  kugeln:       { label: 'Kugeln & Portionen', ico: '🍦', cls: 'cat-kugeln' },
-  spaghettieis: { label: 'Spaghettieis',        ico: '🍝', cls: 'cat-spaghettieis' },
-  becher:       { label: 'Eisbecher',            ico: '🥤', cls: 'cat-becher' },
-  getraenke:    { label: 'Eisgetränke',          ico: '🧃', cls: 'cat-getraenke' },
-};
-
 // ─── State ───
 let config = {
-  kugeln: [
-    { name: 'Eiskugel',       price: 2.00 },
-    { name: 'Portion Sahne',  price: 1.90 },
-  ],
-  spaghettieis: [
-    { name: 'Spaghettieis Tradizionale', price: 7.80 },
-    { name: 'Spaghettieis Fragola',      price: 8.70 },
-    { name: 'Spaghettieis Banana',       price: 8.20 },
-    { name: 'Spaghettieis Carbonara',    price: 8.70 },
-  ],
+  priceSmall: 1.20,
+  priceLarge: 1.80,
+  sahne: 0.50,
   becher: [
-    { name: 'Amarena',       price: 8.50 },
-    { name: 'Schoko',        price: 8.70 },
-    { name: 'Erdbeerbecher', price: 8.90 },
-    { name: 'Früchtebecher', price: 8.50 },
-    { name: 'Bananabecher',  price: 8.50 },
-  ],
-  getraenke: [
-    { name: 'Milchshake (nach Wahl)',        price: 4.00 },
-    { name: 'Smoothie (Mango, Fruchtmix)',   price: 4.30 },
-  ],
+    { name: 'Spaghetti Tradizional', price: 0.00, num: 1 },
+    { name: 'Spaghetti Fragola',     price: 0.00, num: 2 },
+    { name: 'Spaghetti Banana',      price: 0.00, num: 3 },
+    { name: 'Spaghetti Carbonara',   price: 0.00, num: 4 },
+    { name: 'Amarenabecher',         price: 0.00, num: 5 },
+    { name: 'Schokobecher',          price: 0.00, num: 6 },
+    { name: 'Erdbeerbecher',         price: 0.00, num: 7 },
+    { name: 'Früchtebecher',         price: 0.00, num: 8 },
+    { name: 'Bananenbecher',         price: 0.00, num: 9 },
+    { name: 'Kinderbecher',          price: 0.00, num: 10 },
+    { name: 'Milchshake nach Wahl',  price: 0.00, num: 11 },
+    { name: 'Smoothie Mango',        price: 0.00, num: 12 },
+    { name: 'Smoothie Früchtemix',   price: 0.00, num: 13 },
+  ]
 };
-
-let cart  = [];
-let sales = { kugeln: {}, spaghettieis: {}, becher: {}, getraenke: {} };
-let qty   = 1;
-
-// ─── Shortcut-Mapping 1–9 ───
-const SHORTCUTS = {
-  1: { cat: 'spaghettieis', idx: 0 }, // Tradizionale
-  2: { cat: 'spaghettieis', idx: 1 }, // Fragola
-  3: { cat: 'spaghettieis', idx: 2 }, // Banana
-  4: { cat: 'spaghettieis', idx: 3 }, // Carbonara
-  5: { cat: 'becher',       idx: 0 }, // Amarena
-  6: { cat: 'becher',       idx: 1 }, // Schoko
-  7: { cat: 'becher',       idx: 2 }, // Erdbeerbecher
-  8: { cat: 'becher',       idx: 3 }, // Früchtebecher
-  9: { cat: 'becher',       idx: 4 }, // Bananabecher
-};
-
-// ─── Menge / Shortcuts ───
-function changeQty(delta) {
-  qty = Math.max(1, Math.min(99, qty + delta));
-  updateQtyDisplay();
-}
-function getQty() { return qty; }
-function updateQtyDisplay() {
-  const el = document.getElementById('qty-display');
-  if (!el) return;
-  el.textContent = '×' + qty;
-  el.style.color = qty > 1 ? 'var(--mint)' : 'var(--text-dim)';
-}
-function pressShortcut(n) {
-  const s = SHORTCUTS[n];
-  if (!s) return;
-  addToCart(s.cat, s.idx);
-}
-function undoLast() {
-  if (cart.length === 0) return;
-  cart.pop();
-  renderCart();
-}
-function getShortcutNum(cat, idx) {
-  const entry = Object.entries(SHORTCUTS).find(([, s]) => s.cat === cat && s.idx === idx);
-  return entry ? entry[0] : null;
-}
-function renderShortcuts() {
-  const pad = document.getElementById('shortcut-pad');
-  if (!pad) return;
-  const entries = Object.entries(SHORTCUTS);
-  if (entries.length === 0) { pad.innerHTML = ''; return; }
-
-  // Gruppieren nach Kategorie
-  const groups = {};
-  entries.forEach(([n, s]) => {
-    if (!groups[s.cat]) groups[s.cat] = [];
-    groups[s.cat].push({ n, ...s });
-  });
-
-  pad.innerHTML = Object.entries(groups).map(([cat, items]) => `
-    <div class="shortcut-pad-label">${CAT_META[cat]?.label || cat}</div>
-    ${items.map(({ n, cat: c, idx }) => {
-      const item = config[c]?.[idx];
-      if (!item) return '';
-      return `<button class="sc-btn" onclick="pressShortcut(${n})">
-        <span class="sc-num">${n}</span>
-        <span class="sc-name">${escHtml(item.name)}</span>
-        <span class="sc-price">${fmt(item.price)}</span>
-      </button>`;
-    }).join('')}
-  `).join('');
-}
-// Tastatur-Shortcuts (physische Tastatur)
-document.addEventListener('keydown', e => {
-  const n = parseInt(e.key);
-  if (n >= 1 && n <= 9 && SHORTCUTS[n]) pressShortcut(n);
-});
+let cart = [];
+let sales = { scoopSmall: 0, scoopLarge: 0, becher: {} }; // daily totals
 
 // ─── Persist ───
 function save() {
   localStorage.setItem('eiskasse_config', JSON.stringify(config));
-  localStorage.setItem('eiskasse_sales',  JSON.stringify(sales));
+  localStorage.setItem('eiskasse_sales', JSON.stringify(sales));
 }
 function load() {
   const c = localStorage.getItem('eiskasse_config');
   const s = localStorage.getItem('eiskasse_sales');
-  if (c) {
-    const parsed = JSON.parse(c);
-    // Migration: altes Format hatte priceSmall/priceLarge → ignorieren, neue Defaults behalten
-    if (parsed.kugeln !== undefined) config = parsed;
-  }
-  if (s) {
-    const parsed = JSON.parse(s);
-    // Migration: altes Format hatte scoopSmall → ignorieren
-    if (parsed.scoopSmall === undefined) {
-      sales = { kugeln: {}, spaghettieis: {}, becher: {}, getraenke: {}, ...parsed };
-    }
-  }
+  if (c) config = JSON.parse(c);
+  if (s) sales = JSON.parse(s);
 }
 
 // ─── Tab switching ───
@@ -920,51 +809,102 @@ function switchTab(name) {
 
 // ─── POS rendering ───
 function renderPOS() {
+  // Left: only Eisbecher & Spaghetti (filter out Milchshake/Smoothie for left? No — left gets all becher)
   const area = document.getElementById('pos-items-area');
-  area.innerHTML = Object.entries(CAT_META).map(([cat, meta]) => `
+  area.innerHTML = `
     <div>
-      <div class="section-label">${meta.label}</div>
+      <div class="section-label">Eisbecher &amp; Getränke</div>
       <div class="grid3">
-        ${(config[cat] || []).map((item, i) => {
-          const sc = getShortcutNum(cat, i);
-          return `<button class="item-btn ${meta.cls}" onclick="addToCart('${cat}',${i})">
-            ${sc ? `<span class="sc-badge">${sc}</span>` : ''}
-            <span class="ico">${meta.ico}</span>
-            <span class="lbl">${escHtml(item.name)}</span>
-            <span class="price-tag">${fmt(item.price)}</span>
-          </button>`;
-        }).join('')}
+        ${config.becher.map((b, i) => `
+          <button class="item-btn becher-btn" onclick="addToCart('becher-${i}')">
+            <span class="num-badge">${b.num}</span>
+            <span class="ico">${becherIcon(b.name)}</span>
+            <span class="lbl">${escHtml(b.name)}</span>
+            <span class="price-tag">${b.price > 0 ? fmt(b.price) : '—'}</span>
+          </button>
+        `).join('')}
       </div>
     </div>
-  `).join('');
-  renderShortcuts();
+  `;
+
+  // Right quick panel
+  const quick = document.getElementById('quick-panel');
+  quick.innerHTML = `
+    <button class="item-btn scoop-small" onclick="addToCart('scoop-small')">
+      <span class="num-badge">K</span>
+      <span class="ico">🍦</span>
+      <span class="lbl">Kugel Klein</span>
+      <span class="price-tag">${fmt(config.priceSmall)}</span>
+    </button>
+    <button class="item-btn scoop-large" onclick="addToCart('scoop-large')">
+      <span class="num-badge">G</span>
+      <span class="ico">🍨</span>
+      <span class="lbl">Kugel Groß</span>
+      <span class="price-tag">${fmt(config.priceLarge)}</span>
+    </button>
+    <button class="item-btn sahne-btn" onclick="addToCart('sahne')">
+      <span class="num-badge">S</span>
+      <span class="ico">🍶</span>
+      <span class="lbl">Portion Sahne</span>
+      <span class="price-tag">${fmt(config.sahne)}</span>
+    </button>
+    ${config.becher.filter(b => b.name.toLowerCase().includes('milchshake')).map((b, i) => {
+      const realIdx = config.becher.indexOf(b);
+      return `<button class="item-btn becher-btn" onclick="addToCart('becher-${realIdx}')">
+        <span class="num-badge">${b.num}</span>
+        <span class="ico">🥛</span>
+        <span class="lbl">${escHtml(b.name)}</span>
+        <span class="price-tag">${b.price > 0 ? fmt(b.price) : '—'}</span>
+      </button>`;
+    }).join('')}
+  `;
+}
+
+function becherIcon(name) {
+  if (name.toLowerCase().includes('spaghetti')) return '🍝';
+  if (name.toLowerCase().includes('schoko')) return '🍫';
+  if (name.toLowerCase().includes('erdbeer')) return '🍓';
+  if (name.toLowerCase().includes('früchte') || name.toLowerCase().includes('frucht')) return '🍑';
+  if (name.toLowerCase().includes('banana') || name.toLowerCase().includes('bananen')) return '🍌';
+  if (name.toLowerCase().includes('amarena')) return '🍒';
+  if (name.toLowerCase().includes('kinder')) return '🧒';
+  if (name.toLowerCase().includes('milchshake')) return '🥛';
+  if (name.toLowerCase().includes('smoothie')) return '🥤';
+  return '🍨';
 }
 
 // ─── Cart ───
-function addToCart(category, idx) {
-  const item  = config[category][idx];
-  const count = getQty();
-  for (let i = 0; i < count; i++) {
-    cart.push({ category, idx, name: item.name, price: item.price, id: Date.now() + Math.random() });
+function addToCart(type) {
+  let item;
+  if (type === 'scoop-small') item = { type, name: 'Kugel Klein', price: config.priceSmall };
+  else if (type === 'scoop-large') item = { type, name: 'Kugel Groß', price: config.priceLarge };
+  else if (type === 'sahne') item = { type, name: 'Portion Sahne', price: config.sahne };
+  else {
+    const idx = parseInt(type.split('-')[1]);
+    const b = config.becher[idx];
+    item = { type, name: b.name, price: b.price };
   }
-  qty = 1;
-  updateQtyDisplay();
+  cart.push({ ...item, id: Date.now() + Math.random() });
   renderCart();
 }
+
 function removeFromCart(id) {
   cart = cart.filter(c => c.id !== id);
   renderCart();
 }
+
 function clearCart() {
   cart = [];
   renderCart();
 }
+
 function renderCart() {
-  const list  = document.getElementById('cart-list');
-  const btn   = document.getElementById('btn-checkout');
+  const list = document.getElementById('cart-list');
+  const btn = document.getElementById('btn-checkout');
   const total = cart.reduce((s, c) => s + c.price, 0);
   document.getElementById('cart-total').textContent = fmt(total);
   btn.disabled = cart.length === 0;
+
   if (cart.length === 0) {
     list.innerHTML = '<p class="cart-empty">Noch nichts gewählt.<br>Tippe auf einen Artikel.</p>';
     return;
@@ -977,12 +917,21 @@ function renderCart() {
     </div>
   `).join('');
 }
+
 function checkout() {
   if (cart.length === 0) return;
   cart.forEach(c => {
-    if (!sales[c.category]) sales[c.category] = {};
-    if (!sales[c.category][c.name]) sales[c.category][c.name] = { qty: 0, price: c.price };
-    sales[c.category][c.name].qty++;
+    if (c.type === 'scoop-small') sales.scoopSmall++;
+    else if (c.type === 'scoop-large') sales.scoopLarge++;
+    else if (c.type === 'sahne') {
+      if (!sales.becher['Portion Sahne']) sales.becher['Portion Sahne'] = { qty: 0, price: config.sahne };
+      sales.becher['Portion Sahne'].qty++;
+    }
+    else {
+      const name = c.name;
+      if (!sales.becher[name]) sales.becher[name] = { qty: 0, price: c.price };
+      sales.becher[name].qty++;
+    }
   });
   save();
   clearCart();
@@ -990,83 +939,86 @@ function checkout() {
 }
 
 // ─── Summary ───
-function renderCategoryTable(tbodyId, category) {
-  const tbody   = document.getElementById(tbodyId);
-  const entries = Object.entries(sales[category] || {}).filter(([, v]) => v.qty > 0);
-  if (entries.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" class="no-data">Noch nichts verkauft</td></tr>`;
-    return { qty: 0, rev: 0 };
-  }
-  let totQty = 0, totRev = 0;
-  const rows = entries.map(([name, v]) => {
-    totQty += v.qty;
-    totRev += v.qty * v.price;
-    return `<tr>
-      <td>${escHtml(name)}</td>
-      <td class="td-right">${v.qty}×</td>
-      <td class="td-right td-bold">${fmt(v.qty * v.price)}</td>
-    </tr>`;
-  }).join('');
-  tbody.innerHTML = rows + `
-    <tr style="background:var(--surface2)">
-      <td><strong>Gesamt</strong></td>
-      <td class="td-right"><strong>${totQty}×</strong></td>
-      <td class="td-right td-bold"><strong>${fmt(totRev)}</strong></td>
-    </tr>`;
-  return { qty: totQty, rev: totRev };
-}
-
 function renderSummary() {
-  const k  = renderCategoryTable('summary-kugeln',       'kugeln');
-  const sp = renderCategoryTable('summary-spaghettieis', 'spaghettieis');
-  const b  = renderCategoryTable('summary-becher',       'becher');
-  const g  = renderCategoryTable('summary-getraenke',    'getraenke');
+  // Stats
+  const totalScoops = sales.scoopSmall + sales.scoopLarge;
+  const scoopRev = sales.scoopSmall * config.priceSmall + sales.scoopLarge * config.priceLarge;
+  const becherRev = Object.values(sales.becher).reduce((s, b) => s + b.qty * b.price, 0);
+  const totalRev = scoopRev + becherRev;
+  const totalTx = Math.ceil(totalScoops / 1) + Object.values(sales.becher).reduce((s,b)=>s+b.qty,0);
 
-  const totalRev = k.rev + sp.rev + b.rev + g.rev;
-  const totalQty = k.qty + sp.qty + b.qty + g.qty;
+  document.getElementById('stat-revenue').textContent = fmt(totalRev);
+  document.getElementById('stat-scoops').textContent = totalScoops;
+  document.getElementById('stat-tx').textContent = Object.values(sales.becher).reduce((s,b)=>s+b.qty,0) + (sales.scoopSmall + sales.scoopLarge > 0 ? 1 : 0);
 
-  document.getElementById('stat-revenue').textContent     = fmt(totalRev);
-  document.getElementById('stat-tx').textContent          = totalQty;
-  document.getElementById('stat-scoops').textContent      = k.qty;
-  document.getElementById('stat-spaghettieis').textContent = sp.qty;
+  // Scoops table
+  const scoopsTbody = document.getElementById('summary-scoops');
+  if (totalScoops === 0) {
+    scoopsTbody.innerHTML = '<tr><td colspan="3" class="no-data">Noch keine Kugeln verkauft</td></tr>';
+  } else {
+    scoopsTbody.innerHTML = `
+      ${sales.scoopSmall > 0 ? `<tr><td>Kugel Klein</td><td class="td-right">${sales.scoopSmall}×</td><td class="td-right td-bold">${fmt(sales.scoopSmall * config.priceSmall)}</td></tr>` : ''}
+      ${sales.scoopLarge > 0 ? `<tr><td>Kugel Groß</td><td class="td-right">${sales.scoopLarge}×</td><td class="td-right td-bold">${fmt(sales.scoopLarge * config.priceLarge)}</td></tr>` : ''}
+      <tr style="background:var(--surface2)">
+        <td><strong>Gesamt Kugeln</strong></td>
+        <td class="td-right"><strong>${totalScoops}×</strong></td>
+        <td class="td-right td-bold"><strong>${fmt(scoopRev)}</strong></td>
+      </tr>
+    `;
+  }
+
+  // Becher table
+  const becherTbody = document.getElementById('summary-becher');
+  const becherEntries = Object.entries(sales.becher).filter(([,v]) => v.qty > 0);
+  if (becherEntries.length === 0) {
+    becherTbody.innerHTML = '<tr><td colspan="3" class="no-data">Noch keine Eisbecher verkauft</td></tr>';
+  } else {
+    const rows = becherEntries.map(([name, v]) =>
+      `<tr><td>${escHtml(name)}</td><td class="td-right">${v.qty}×</td><td class="td-right td-bold">${fmt(v.qty * v.price)}</td></tr>`
+    ).join('');
+    const totQty = becherEntries.reduce((s,[,v])=>s+v.qty,0);
+    becherTbody.innerHTML = rows + `
+      <tr style="background:var(--surface2)">
+        <td><strong>Gesamt Becher</strong></td>
+        <td class="td-right"><strong>${totQty}×</strong></td>
+        <td class="td-right td-bold"><strong>${fmt(becherRev)}</strong></td>
+      </tr>
+    `;
+  }
 }
 
 // ─── Export ───
 function exportExcel() {
   const today = new Date().toLocaleDateString('de-DE');
-  const wb    = XLSX.utils.book_new();
-  const rows  = [
+  const wb = XLSX.utils.book_new();
+  const rows = [
     ['Eiskasse – Tagesabschluss', today],
     [],
+    ['KUGELN'],
+    ['Artikel', 'Menge', 'Einzelpreis', 'Umsatz'],
   ];
-
-  const cats = [
-    { key: 'kugeln',       label: 'KUGELN & PORTIONEN' },
-    { key: 'spaghettieis', label: 'SPAGHETTIEIS' },
-    { key: 'becher',       label: 'EISBECHER' },
-    { key: 'getraenke',    label: 'EISGETRÄNKE' },
-  ];
-
-  let grandTotal = 0;
-  cats.forEach(cat => {
-    rows.push([cat.label]);
-    rows.push(['Artikel', 'Menge', 'Einzelpreis (€)', 'Umsatz (€)']);
-    let catTotal = 0, catQty = 0;
-    Object.entries(sales[cat.key] || {}).forEach(([name, v]) => {
-      rows.push([name, v.qty, v.price, v.qty * v.price]);
-      catTotal += v.qty * v.price;
-      catQty   += v.qty;
-    });
-    rows.push([`Gesamt ${cat.label}`, catQty, '', catTotal]);
-    rows.push([]);
-    grandTotal += catTotal;
+  if (sales.scoopSmall > 0) rows.push(['Kugel Klein', sales.scoopSmall, config.priceSmall, sales.scoopSmall * config.priceSmall]);
+  if (sales.scoopLarge > 0) rows.push(['Kugel Groß', sales.scoopLarge, config.priceLarge, sales.scoopLarge * config.priceLarge]);
+  const scoopTotal = sales.scoopSmall * config.priceSmall + sales.scoopLarge * config.priceLarge;
+  rows.push(['Gesamt Kugeln', sales.scoopSmall + sales.scoopLarge, '', scoopTotal]);
+  rows.push([]);
+  rows.push(['EISBECHER']);
+  rows.push(['Name', 'Menge', 'Einzelpreis', 'Umsatz']);
+  let becherTotal = 0;
+  let becherQtyTotal = 0;
+  Object.entries(sales.becher).forEach(([name, v]) => {
+    rows.push([name, v.qty, v.price, v.qty * v.price]);
+    becherTotal += v.qty * v.price;
+    becherQtyTotal += v.qty;
   });
-  rows.push(['GESAMTUMSATZ', '', '', grandTotal]);
+  rows.push(['Gesamt Eisbecher', becherQtyTotal, '', becherTotal]);
+  rows.push([]);
+  rows.push(['GESAMTUMSATZ', '', '', scoopTotal + becherTotal]);
 
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{ wch: 28 }, { wch: 8 }, { wch: 16 }, { wch: 14 }];
+  ws['!cols'] = [{wch:22},{wch:8},{wch:14},{wch:12}];
   XLSX.utils.book_append_sheet(wb, ws, 'Tagesabschluss');
-  XLSX.writeFile(wb, `Eiskasse_${today.replace(/\./g, '-')}.xlsx`);
+  XLSX.writeFile(wb, `Eiskasse_${today.replace(/\./g,'-')}.xlsx`);
   showToast('📊 Excel wird heruntergeladen...');
 }
 
@@ -1077,7 +1029,7 @@ function exportPDF() {
 
 function resetDay() {
   if (!confirm('Tagesumsatz wirklich zurücksetzen? Das kann nicht rückgängig gemacht werden.')) return;
-  sales = { kugeln: {}, spaghettieis: {}, becher: {}, getraenke: {} };
+  sales = { scoopSmall: 0, scoopLarge: 0, becher: {} };
   save();
   renderSummary();
   showToast('🔄 Tag zurückgesetzt');
@@ -1085,47 +1037,52 @@ function resetDay() {
 
 // ─── Settings ───
 function renderSettings() {
-  Object.keys(CAT_META).forEach(cat => renderItemFields(cat));
+  document.getElementById('price-small').value = config.priceSmall;
+  document.getElementById('price-large').value = config.priceLarge;
+  document.getElementById('price-sahne').value = config.sahne;
+  renderBecherFields();
 }
 
-function renderItemFields(cat) {
-  const list = document.getElementById(`${cat}-list`);
-  if (!list) return;
-  list.innerHTML = (config[cat] || []).map((item, i) => `
+function renderBecherFields() {
+  const list = document.getElementById('becher-list');
+  list.innerHTML = config.becher.map((b, i) => `
     <div class="becher-entry">
-      <input type="text"   class="input-field input-name"  id="${cat}-name-${i}"  value="${escAttr(item.name)}" placeholder="Name">
-      <input type="number" class="input-field input-price" id="${cat}-price-${i}" value="${item.price}" step="0.05" min="0">
+      <span style="font-size:0.75rem;color:var(--text-dim);min-width:18px;text-align:center;font-family:'Syne',sans-serif;font-weight:700">${b.num||''}</span>
+      <input type="text" class="input-field" id="becher-name-${i}" value="${escAttr(b.name)}" placeholder="Name">
+      <input type="number" class="input-field input-price" id="becher-price-${i}" value="${b.price}" step="0.05" min="0">
       <span style="font-size:0.75rem;color:var(--text-dim)">€</span>
-      <button class="btn-del-becher" onclick="deleteItemField('${cat}',${i})">✕</button>
+      <button class="btn-del-becher" onclick="deleteBecherField(${i})">✕</button>
     </div>
   `).join('');
 }
 
-function addItemField(cat) {
-  config[cat].push({ name: '', price: 0.00 });
-  renderItemFields(cat);
+function addBecherField() {
+  config.becher.push({ name: '', price: 0.00 });
+  renderBecherFields();
+  // focus last name field
   setTimeout(() => {
-    const last = document.getElementById(`${cat}-name-${config[cat].length - 1}`);
+    const last = document.getElementById(`becher-name-${config.becher.length - 1}`);
     if (last) last.focus();
   }, 50);
 }
 
-function deleteItemField(cat, i) {
-  config[cat].splice(i, 1);
-  renderItemFields(cat);
+function deleteBecherField(i) {
+  config.becher.splice(i, 1);
+  renderBecherFields();
 }
 
 function saveSettings() {
-  Object.keys(CAT_META).forEach(cat => {
-    config[cat] = [];
-    let idx = 0;
-    while (document.getElementById(`${cat}-name-${idx}`) !== null) {
-      const name  = document.getElementById(`${cat}-name-${idx}`).value.trim();
-      const price = parseFloat(document.getElementById(`${cat}-price-${idx}`).value) || 0;
-      if (name) config[cat].push({ name, price });
-      idx++;
-    }
-  });
+  config.priceSmall = parseFloat(document.getElementById('price-small').value) || 0;
+  config.priceLarge = parseFloat(document.getElementById('price-large').value) || 0;
+  config.sahne = parseFloat(document.getElementById('price-sahne').value) || 0;
+  config.becher = [];
+  let idx = 0;
+  while (document.getElementById(`becher-name-${idx}`) !== null) {
+    const name = document.getElementById(`becher-name-${idx}`).value.trim();
+    const price = parseFloat(document.getElementById(`becher-price-${idx}`).value) || 0;
+    if (name) config.becher.push({ name, price });
+    idx++;
+  }
   save();
   renderPOS();
   showToast('✓ Einstellungen gespeichert');
@@ -1136,11 +1093,10 @@ function fmt(n) {
   return n.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
 }
 function escHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function escAttr(s) { return escHtml(s); }
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1150,51 +1106,57 @@ function showToast(msg) {
 
 // ─── Theme ───
 function applyTheme(theme) {
-  const root  = document.documentElement;
-  const icon  = document.getElementById('theme-icon');
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle-btn');
+  const icon = document.getElementById('theme-icon');
   const label = document.getElementById('theme-label');
-  const meta  = document.querySelector('meta[name="theme-color"]');
+  const meta = document.querySelector('meta[name="theme-color"]');
+
   if (theme === 'dark') {
     root.setAttribute('data-theme', 'dark');
-    icon.textContent  = '☀️';
+    icon.textContent = '☀️';
     label.textContent = 'Hell';
     if (meta) meta.content = '#0f0f14';
   } else {
     root.setAttribute('data-theme', 'light');
-    icon.textContent  = '🌙';
+    icon.textContent = '🌙';
     label.textContent = 'Dunkel';
     if (meta) meta.content = '#f0f0ec';
   }
   localStorage.setItem('eiskasse_theme', theme);
 }
+
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || getSystemTheme();
   applyTheme(current === 'dark' ? 'light' : 'dark');
 }
+
 function getSystemTheme() {
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
+
 function initTheme() {
   const saved = localStorage.getItem('eiskasse_theme');
   applyTheme(saved || getSystemTheme());
+  // Listen for system changes (only if no manual override)
   window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-    if (!localStorage.getItem('eiskasse_theme')) applyTheme(e.matches ? 'light' : 'dark');
+    if (!localStorage.getItem('eiskasse_theme')) {
+      applyTheme(e.matches ? 'light' : 'dark');
+    }
   });
 }
 
 // ─── Clock ───
 function updateClock() {
-  document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
 }
 setInterval(updateClock, 1000);
 updateClock();
 
 // ─── Init ───
 load();
-renderPOS(); // renderShortcuts() wird darin aufgerufen
+renderPOS();
 renderCart();
-updateQtyDisplay();
 initTheme();
 
 // ── Service Worker ──
