@@ -1,4 +1,5 @@
 const CACHE_NAME = 'eiskasse-v2';
+
 const ASSETS = [
   '/index.html',
   '/manifest.json',
@@ -16,11 +17,9 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return Promise.allSettled(
-        ASSETS.map(url =>
-          cache.add(url).catch(err => {
-            console.warn('[SW] Failed to cache:', url, err);
-          })
-        )
+        ASSETS.map(url => cache.add(url).catch(err => {
+          console.warn('[SW] Failed to cache:', url, err);
+        }))
       );
     }).then(() => self.skipWaiting())
   );
