@@ -210,7 +210,7 @@
   .item-btn.scoop-large::before { background: radial-gradient(circle at center, rgba(240,143,173,0.12), transparent 70%); }
   .item-btn.becher-btn::before  { background: radial-gradient(circle at center, rgba(157,143,255,0.12), transparent 70%); }
   .item-btn:active::before { opacity: 1; }
-  .item-btn:active { transform: scale(0.96); border-color: var(--mint); }
+  .item-btn:active { border-color: var(--mint); }
 
   .item-btn .ico { font-size: 1.8rem; line-height: 1; }
   .item-btn .lbl {
@@ -590,6 +590,102 @@
   .item-btn.sahne-btn::before { background: radial-gradient(circle at center, rgba(245,230,200,0.12), transparent 70%); }
   .item-btn.sahne-btn .price-tag { color: var(--cream); }
 
+
+
+  /* ── Numpad ── */
+  .numpad-area {
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .numpad-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    min-height: 40px;
+  }
+  .nd-qty {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--mint);
+    min-width: 20px;
+    text-align: center;
+  }
+  .nd-sep {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  .nd-art {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--cream);
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .numpad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .np-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 10px 4px;
+    cursor: pointer;
+    transition: all 0.12s;
+    line-height: 1;
+  }
+  .np-btn:active { transform: scale(0.93); background: var(--surface2); }
+  .np-clear  { color: var(--danger); border-color: var(--danger); }
+  .np-del    { color: var(--text-dim); }
+  .np-mode   { color: var(--violet); border-color: var(--violet); font-size: 0.72rem; }
+  .np-mode.qty-active { background: var(--violet); color: #0f0f14; }
+  .np-confirm {
+    grid-column: 2 / 4;
+    background: linear-gradient(135deg, var(--mint), var(--violet));
+    color: #0f0f14;
+    border: none;
+    font-size: 0.85rem;
+  }
+
+  /* Tap animation */
+  @keyframes tap-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(0.93); }
+    100% { transform: scale(1); }
+  }
+  .item-btn:active { animation: tap-pop 0.18s ease; }
+
+  /* Quantity badge in cart */
+  .cart-item-qty {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.72rem;
+    color: var(--mint);
+    min-width: 22px;
+  }
+
   /* Toast */
   .toast {
     position: fixed;
@@ -623,7 +719,7 @@
 <header>
   <h1>🍦 Eiskasse</h1>
   <div class="header-tabs">
-    <button class="tab-btn active" onclick="switchTab('pos')">Kasse</button>
+    <button class="tab-btn active" onclick="switchTab('pos')">Kasse <span id="cart-badge" style="display:none;background:var(--pink);color:#0f0f14;border-radius:10px;padding:1px 7px;font-size:0.68rem;font-weight:700;margin-left:3px">0</span></button>
     <button class="tab-btn" onclick="switchTab('summary')">Übersicht</button>
     <button class="tab-btn" onclick="switchTab('settings')">⚙️</button>
   </div>
@@ -645,6 +741,29 @@
   <div class="pos-sidebar">
     <div class="quick-panel" id="quick-panel">
       <!-- rendered by JS -->
+    </div>
+    <div class="numpad-area">
+      <div class="numpad-display" id="numpad-display">
+        <span id="numpad-qty" class="nd-qty">1</span>
+        <span class="nd-sep">×</span>
+        <span id="numpad-art" class="nd-art">—</span>
+      </div>
+      <div class="numpad-grid">
+        <button class="np-btn" onclick="npNum(1)">1</button>
+        <button class="np-btn" onclick="npNum(2)">2</button>
+        <button class="np-btn" onclick="npNum(3)">3</button>
+        <button class="np-btn" onclick="npNum(4)">4</button>
+        <button class="np-btn" onclick="npNum(5)">5</button>
+        <button class="np-btn" onclick="npNum(6)">6</button>
+        <button class="np-btn" onclick="npNum(7)">7</button>
+        <button class="np-btn" onclick="npNum(8)">8</button>
+        <button class="np-btn" onclick="npNum(9)">9</button>
+        <button class="np-btn np-clear" onclick="npClear()">C</button>
+        <button class="np-btn" onclick="npNum(0)">0</button>
+        <button class="np-btn np-del" onclick="npDel()">⌫</button>
+        <button class="np-btn np-mode" onclick="npToggleMode()" id="np-mode-btn">×QTY</button>
+        <button class="np-btn np-confirm" onclick="npConfirm()">✓ Add</button>
+      </div>
     </div>
     <div class="sidebar-header">
       Bon
@@ -893,6 +1012,13 @@ function removeFromCart(id) {
   renderCart();
 }
 
+function removeGroupFromCart(name) {
+  // Remove only the last item with this name
+  const idx = cart.map(c => c.name).lastIndexOf(name);
+  if (idx !== -1) cart.splice(idx, 1);
+  renderCart();
+}
+
 function clearCart() {
   cart = [];
   renderCart();
@@ -905,15 +1031,31 @@ function renderCart() {
   document.getElementById('cart-total').textContent = fmt(total);
   btn.disabled = cart.length === 0;
 
+  // Badge
+  const badge = document.getElementById('cart-badge');
   if (cart.length === 0) {
+    badge.style.display = 'none';
     list.innerHTML = '<p class="cart-empty">Noch nichts gewählt.<br>Tippe auf einen Artikel.</p>';
     return;
   }
-  list.innerHTML = cart.map(c => `
+  badge.style.display = 'inline';
+  badge.textContent = cart.length;
+
+  // Group by name for quantity display
+  const grouped = {};
+  cart.forEach(c => {
+    const key = c.name;
+    if (!grouped[key]) grouped[key] = { ...c, qty: 0, ids: [] };
+    grouped[key].qty++;
+    grouped[key].ids.push(c.id);
+  });
+
+  list.innerHTML = Object.values(grouped).map(g => `
     <div class="cart-item">
-      <span class="cart-item-name">${escHtml(c.name)}</span>
-      <span class="cart-item-price">${fmt(c.price)}</span>
-      <button class="cart-item-del" onclick="removeFromCart(${c.id})">✕</button>
+      <span class="cart-item-qty">${g.qty > 1 ? `×${g.qty}` : ''}</span>
+      <span class="cart-item-name">${escHtml(g.name)}</span>
+      <span class="cart-item-price">${fmt(g.price * g.qty)}</span>
+      <button class="cart-item-del" onclick="removeGroupFromCart('${escHtml(g.name)}')">✕</button>
     </div>
   `).join('');
 }
@@ -1139,6 +1281,83 @@ function initTheme() {
       applyTheme(e.matches ? 'light' : 'dark');
     }
   });
+}
+
+
+// ─── Numpad ───
+let npState = {
+  mode: 'article', // 'article' or 'qty'
+  artStr: '',
+  qtyStr: '1',
+};
+
+function npNum(n) {
+  if (npState.mode === 'article') {
+    npState.artStr += String(n);
+    // Auto-lookup article
+    const num = parseInt(npState.artStr);
+    const found = config.becher.find(b => b.num === num);
+    document.getElementById('numpad-art').textContent = found ? found.name : `#${npState.artStr}`;
+  } else {
+    if (npState.qtyStr === '1' && n !== 0) npState.qtyStr = String(n);
+    else npState.qtyStr += String(n);
+    document.getElementById('numpad-qty').textContent = npState.qtyStr;
+  }
+}
+
+function npDel() {
+  if (npState.mode === 'article') {
+    npState.artStr = npState.artStr.slice(0, -1);
+    if (npState.artStr === '') {
+      document.getElementById('numpad-art').textContent = '—';
+    } else {
+      const num = parseInt(npState.artStr);
+      const found = config.becher.find(b => b.num === num);
+      document.getElementById('numpad-art').textContent = found ? found.name : `#${npState.artStr}`;
+    }
+  } else {
+    npState.qtyStr = npState.qtyStr.slice(0, -1) || '1';
+    document.getElementById('numpad-qty').textContent = npState.qtyStr;
+  }
+}
+
+function npClear() {
+  npState.artStr = '';
+  npState.qtyStr = '1';
+  npState.mode = 'article';
+  document.getElementById('numpad-art').textContent = '—';
+  document.getElementById('numpad-qty').textContent = '1';
+  document.getElementById('np-mode-btn').classList.remove('qty-active');
+  document.getElementById('np-mode-btn').textContent = '×QTY';
+}
+
+function npToggleMode() {
+  npState.mode = npState.mode === 'article' ? 'qty' : 'article';
+  const btn = document.getElementById('np-mode-btn');
+  if (npState.mode === 'qty') {
+    btn.classList.add('qty-active');
+    btn.textContent = '#ART';
+    npState.qtyStr = '';
+    document.getElementById('numpad-qty').textContent = '_';
+  } else {
+    btn.classList.remove('qty-active');
+    btn.textContent = '×QTY';
+    if (!npState.qtyStr) npState.qtyStr = '1';
+    document.getElementById('numpad-qty').textContent = npState.qtyStr;
+  }
+}
+
+function npConfirm() {
+  const artNum = parseInt(npState.artStr);
+  const qty = Math.max(1, parseInt(npState.qtyStr) || 1);
+  if (!artNum) { showToast('Artikelnummer eingeben'); return; }
+
+  const idx = config.becher.findIndex(b => b.num === artNum);
+  if (idx === -1) { showToast(`Kein Artikel #${artNum}`); return; }
+
+  for (let i = 0; i < qty; i++) addToCart('becher-' + idx);
+  showToast(`✓ ${qty}× ${config.becher[idx].name}`);
+  npClear();
 }
 
 // ─── Clock ───
