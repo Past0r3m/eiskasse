@@ -787,13 +787,30 @@ let sales = { scoopSmall: 0, scoopLarge: 0, becher: {} }; // daily totals
 
 // ─── Persist ───
 function save() {
-  localStorage.setItem('eiskasse_config', JSON.stringify(config));
+  localStorage.setItem('eiskasse_config', JSON.stringify({ ...config, version: CONFIG_VERSION }));
   localStorage.setItem('eiskasse_sales', JSON.stringify(sales));
 }
+const CONFIG_VERSION = 2; // bump when becher list changes
+
 function load() {
   const c = localStorage.getItem('eiskasse_config');
   const s = localStorage.getItem('eiskasse_sales');
-  if (c) config = JSON.parse(c);
+  if (c) {
+    const parsed = JSON.parse(c);
+    // Reset if version mismatch or num fields missing
+    const hasVersion = parsed.version === CONFIG_VERSION;
+    const hasNum = parsed.becher && parsed.becher.length > 0 && parsed.becher[0].num !== undefined;
+    if (hasVersion && hasNum) {
+      config = parsed;
+    } else {
+      // Keep prices if they were set, reset becher to defaults
+      if (parsed.priceSmall) config.priceSmall = parsed.priceSmall;
+      if (parsed.priceLarge) config.priceLarge = parsed.priceLarge;
+      if (parsed.sahne) config.sahne = parsed.sahne;
+      // Save clean config
+      save();
+    }
+  }
   if (s) sales = JSON.parse(s);
 }
 
@@ -817,7 +834,7 @@ function renderPOS() {
       <div class="grid3">
         ${config.becher.map((b, i) => `
           <button class="item-btn becher-btn" onclick="addToCart('becher-${i}')">
-            <span class="num-badge">${b.num}</span>
+            <span class="num-badge">${b.num || ''}</span>
             <span class="ico">${becherIcon(b.name)}</span>
             <span class="lbl">${escHtml(b.name)}</span>
             <span class="price-tag">${b.price > 0 ? fmt(b.price) : '—'}</span>
