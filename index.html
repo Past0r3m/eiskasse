@@ -1069,6 +1069,7 @@ function renderPOS() {
   // Right quick panel
   const quick = document.getElementById('quick-panel');
   const milchshakeIdx = config.becher.findIndex(b => b.name.toLowerCase().includes('milchshake'));
+  const smoothieIdx   = config.becher.findIndex(b => b.name.toLowerCase().includes('smoothie'));
   quick.innerHTML = `
     <button class="item-btn scoop-small" onclick="addToCart('scoop-small')">
       <span class="num-badge">🍦</span>
@@ -1082,11 +1083,17 @@ function renderPOS() {
       <span class="lbl">Portion Sahne</span>
       <span class="price-tag">${fmt(config.sahne)}</span>
     </button>
-    ${milchshakeIdx >= 0 ? `<button class="item-btn becher-btn" onclick="addToCart('becher-${milchshakeIdx}')" style="grid-column:1/-1">
+    ${milchshakeIdx >= 0 ? `<button class="item-btn becher-btn" onclick="addToCart('becher-${milchshakeIdx}')">
       <span class="num-badge">${config.becher[milchshakeIdx].num}</span>
       <span class="ico">🥛</span>
       <span class="lbl">${escHtml(config.becher[milchshakeIdx].name)}</span>
       <span class="price-tag">${fmt(config.becher[milchshakeIdx].price)}</span>
+    </button>` : ''}
+    ${smoothieIdx >= 0 ? `<button class="item-btn becher-btn" onclick="addToCart('becher-${smoothieIdx}')">
+      <span class="num-badge">${config.becher[smoothieIdx].num}</span>
+      <span class="ico">🥤</span>
+      <span class="lbl">${escHtml(config.becher[smoothieIdx].name)}</span>
+      <span class="price-tag">${fmt(config.becher[smoothieIdx].price)}</span>
     </button>` : ''}
   `;
 }
