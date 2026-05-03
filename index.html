@@ -1012,24 +1012,30 @@ function save() {
   localStorage.setItem('eiskasse_config', JSON.stringify({ ...config, version: CONFIG_VERSION }));
   localStorage.setItem('eiskasse_sales', JSON.stringify(sales));
 }
-const CONFIG_VERSION = 4; // bump when becher list changes
+const CONFIG_VERSION = 5; // bump when becher list changes
 
 function load() {
   const c = localStorage.getItem('eiskasse_config');
   const s = localStorage.getItem('eiskasse_sales');
   if (c) {
     const parsed = JSON.parse(c);
-    // Reset if version mismatch or num fields missing
-    const hasVersion = parsed.version === CONFIG_VERSION;
-    const hasNum = parsed.becher && parsed.becher.length > 0 && parsed.becher[0].num !== undefined;
-    if (hasVersion && hasNum) {
+    if (parsed.version === CONFIG_VERSION) {
+      // Same version - load all stored data
       config = parsed;
     } else {
-      // Keep prices if they were set, reset becher to defaults
-      if (parsed.priceSmall) config.priceSmall = parsed.priceSmall;
-      if (parsed.priceLarge) config.priceLarge = parsed.priceLarge;
+      // Version mismatch - keep ONLY user-modified prices, force fresh becher list from code defaults
+      if (parsed.priceScoop) config.priceScoop = parsed.priceScoop;
       if (parsed.sahne) config.sahne = parsed.sahne;
-      // Save clean config
+      // Migrate user-modified becher prices by name match (preserves price overrides)
+      if (parsed.becher && Array.isArray(parsed.becher)) {
+        config.becher.forEach(defaultB => {
+          const oldB = parsed.becher.find(p => p.num === defaultB.num);
+          if (oldB && typeof oldB.price === 'number' && oldB.price !== 0 && oldB.name === defaultB.name) {
+            defaultB.price = oldB.price;
+          }
+        });
+      }
+      // Persist clean migrated config
       save();
     }
   }
@@ -1494,12 +1500,38 @@ renderPOS();
 renderCart();
 initTheme();
 
-// ── Service Worker ──
+// ── Service Worker with Auto-Update ──
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/eiskasse/service-worker.js')
-      .then(reg => console.log('[SW] Registered:', reg.scope))
+      .then(reg => {
+        console.log('[SW] Registered:', reg.scope);
+
+        // Check for updates every 60 seconds while app is open
+        setInterval(() => reg.update(), 60_000);
+
+        // When new SW found, activate it immediately
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available - tell it to activate
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+              showToast('🔄 Update verfügbar – wird geladen...');
+            }
+          });
+        });
+      })
       .catch(err => console.warn('[SW] Registration failed:', err));
+
+    // Reload page when new SW takes control
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
   });
 }
 </script>
