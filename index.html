@@ -999,7 +999,7 @@ let config = {
     { name: 'Erdbeerbecher',            price: 8.90, num: 7 },
     { name: 'Früchtebecher',            price: 8.50, num: 8 },
     { name: 'Bananenbecher',            price: 8.50, num: 9 },
-    { name: 'Kinderbecher',             price: 8.80, num: 10 },
+    { name: 'Krokantbecher',            price: 8.80, num: 10 },
     { name: 'Milchshake nach Wahl',     price: 4.00, num: 11 },
     { name: 'Smoothie Mango/Früchtemix',price: 4.30, num: 12 },
   ]
@@ -1012,7 +1012,7 @@ function save() {
   localStorage.setItem('eiskasse_config', JSON.stringify({ ...config, version: CONFIG_VERSION }));
   localStorage.setItem('eiskasse_sales', JSON.stringify(sales));
 }
-const CONFIG_VERSION = 3; // bump when becher list changes
+const CONFIG_VERSION = 4; // bump when becher list changes
 
 function load() {
   const c = localStorage.getItem('eiskasse_config');
@@ -1106,6 +1106,7 @@ function becherIcon(name) {
   if (name.toLowerCase().includes('banana') || name.toLowerCase().includes('bananen')) return '🍌';
   if (name.toLowerCase().includes('amarena')) return '🍒';
   if (name.toLowerCase().includes('kinder')) return '🧒';
+  if (name.toLowerCase().includes('krokant')) return '🥜';
   if (name.toLowerCase().includes('milchshake')) return '🥛';
   if (name.toLowerCase().includes('smoothie')) return '🥤';
   return '🍨';
