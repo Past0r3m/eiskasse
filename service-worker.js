@@ -1,4 +1,4 @@
-const CACHE_NAME = 'eiskasse-v7';
+const CACHE_NAME = 'eiskasse-v8';
 
 const ASSETS = [
   '/eiskasse/index.html',
