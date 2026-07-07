@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v16';
 const CACHE_NAME = `eiskasse-${CACHE_VERSION}`;
 const BASE = '/eiskasse';
 
@@ -34,7 +34,83 @@ self.addEventListener('install', event => {
           console.warn('[SW] Failed to cache:', url, err);
         }))
       );
-    }).then(() => self.skipWaiting())
+    })
+    // KEIN skipWaiting hier! Aktivierung nur per Message aus der App,
+    // wenn die Kasse idle ist (Bon leer). Verhindert Reload beim Kassieren.
+  );
+});
+
+// ── Activate: remove old caches ──
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+// ── Fetch: smart strategy per resource ──
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+  if (event.request.url.startsWith('chrome-extension://')) return;
+
+  const url = new URL(event.request.url);
+  const path = url.pathname;
+  const isNetworkFirst = NETWORK_FIRST.some(p => path === p || path === p.replace(/\/$/, ''));
+  const isNavigation = event.request.mode === 'navigate';
+
+  if (isNetworkFirst || isNavigation) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+  event.respondWith(cacheFirst(event.request));
+});
+
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (err) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    if (request.mode === 'navigate') {
+      return caches.match(`${BASE}/index.html`);
+    }
+    throw err;
+  }
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (err) {
+    if (request.mode === 'navigate') {
+      return caches.match(`${BASE}/index.html`);
+    }
+    throw err;
+  }
+}
+
+// ── Listen for skipWaiting message ──
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});    }).then(() => self.skipWaiting())
   );
 });
 
