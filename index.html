@@ -1239,12 +1239,6 @@ function renderPOS() {
       <span class="lbl">Portion Sahne</span>
       <span class="price-tag">${fmt(config.sahne)}</span>
     </button>
-    <button class="item-btn custom-btn" onclick="openPricePad()">
-      <span class="num-badge">€</span>
-      <span class="ico">🧮</span>
-      <span class="lbl">Diverses</span>
-      <span class="price-tag">frei</span>
-    </button>
     ${milchshakeIdx >= 0 ? `<button class="item-btn becher-btn" onclick="addToCart('becher-${milchshakeIdx}')">
       <span class="num-badge">${config.becher[milchshakeIdx].num}</span>
       <span class="ico">🥛</span>
@@ -1257,6 +1251,12 @@ function renderPOS() {
       <span class="lbl">${escHtml(config.becher[smoothieIdx].name)}</span>
       <span class="price-tag">${fmt(config.becher[smoothieIdx].price)}</span>
     </button>` : ''}
+    <button class="item-btn custom-btn" onclick="openPricePad()" style="grid-column:1 / -1">
+      <span class="num-badge">€</span>
+      <span class="ico">🧮</span>
+      <span class="lbl">Diverses / Freier Preis</span>
+      <span class="price-tag">z.B. 0,75 €</span>
+    </button>
   `;
 }
 
@@ -1779,55 +1779,18 @@ if ('serviceWorker' in navigator) {
       .then(reg => {
         console.log('[SW] Registered:', reg.scope);
 
-        // Update-Check alle 5 Minuten (60s war zu aggressiv)
+        // Update-Check alle 5 Minuten (der frühere 60s-Loop war das "Aufploppen")
         setInterval(() => reg.update(), 300_000);
-
-        // Neue Version gefunden → NICHT sofort aktivieren.
-        // Erst wenn die Kasse "idle" ist: Bon leer, kein Input fokussiert.
-        // Verhindert Reload/Popup mitten im Kassiervorgang (Datenverlust im Bon!).
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          if (!newWorker) return;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              pendingWorker = newWorker;
-              tryApplyUpdate();
-            }
-          });
-        });
       })
       .catch(err => console.warn('[SW] Registration failed:', err));
 
-    // Reload wenn neuer SW übernimmt — max. 1× pro Session
+    // Neuer SW hat übernommen → genau EIN Reload pro echtem Versionswechsel.
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (refreshing) return;
       refreshing = true;
       window.location.reload();
     });
-  });
-
-  let pendingWorker = null;
-  let updateToastShown = false;
-
-  function isIdle() {
-    const el = document.activeElement;
-    const typing = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA');
-    return cart.length === 0 && !typing;
-  }
-
-  function tryApplyUpdate() {
-    if (!pendingWorker) return;
-    if (isIdle()) {
-      if (!updateToastShown) { showToast('🔄 Update wird installiert...'); updateToastShown = true; }
-      pendingWorker.postMessage({ type: 'SKIP_WAITING' });
-      pendingWorker = null;
-    }
-    // sonst: still warten, alle 30s erneut prüfen
-  }
-  setInterval(tryApplyUpdate, 30_000);
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') tryApplyUpdate();
   });
 }
 </script>
