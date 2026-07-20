@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v21';
+const CACHE_VERSION = 'v22';
 const CACHE_NAME = `eiskasse-${CACHE_VERSION}`;
 const BASE = '/eiskasse';
 
