@@ -1018,19 +1018,6 @@
     <div class="chart-wrap" id="topseller-chart"></div>
   </div>
 
-  <div class="summary-card">
-    <div class="summary-card-header">📅 Letzte 7 Tage</div>
-    <table class="summary-table">
-      <thead><tr>
-        <th>Datum</th>
-        <th class="td-right">Bons</th>
-        <th class="td-right">Kugeln</th>
-        <th class="td-right">Umsatz</th>
-      </tr></thead>
-      <tbody id="summary-history"></tbody>
-    </table>
-  </div>
-
   <p class="last-tx" id="last-tx"></p>
 
   <div class="export-row">
@@ -1445,22 +1432,6 @@ function renderSummary() {
         <div class="chart-bar-track"><div class="chart-bar" style="width:${Math.round(v.qty / max * 100)}%"></div></div>
         <span class="chart-qty">${v.qty}×</span>
       </div>
-    `).join('');
-  }
-
-  // 7-Tage-History
-  const histBody = document.getElementById('summary-history');
-  const hist = loadHistory();
-  if (hist.length === 0) {
-    histBody.innerHTML = '<tr><td colspan="4" class="no-data">Noch keine abgeschlossenen Tage</td></tr>';
-  } else {
-    histBody.innerHTML = hist.map(h => `
-      <tr>
-        <td>${escHtml(h.date)}</td>
-        <td class="td-right">${h.txCount}</td>
-        <td class="td-right">${h.scoops}</td>
-        <td class="td-right td-bold">${fmt(h.revenue)}</td>
-      </tr>
     `).join('');
   }
 
